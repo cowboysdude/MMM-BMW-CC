@@ -68,67 +68,42 @@ Module.register("MMM-BMW-CC", {
             header.innerHTML = this.config.header;
             wrapper.appendChild(header);
         }
+        if (this.current) {
+            var current = this.current;
+            var now = document.createElement("div");
+            now.classList.add("small", "bright", "now");
+            now.innerHTML = 
+                this.config.ownTitle + " &nbsp &nbsp " + 
+                "<img class = image src=modules/MMM-BMW-CC/icons/" + current.weather_code.value + ".png>" +
+                "  &nbsp " + 
+                Math.round(current.temp.value) + "°" + 
+                current.temp.units + " &nbsp &nbsp &nbsp &nbsp " + 
+                " Feels like " + Math.round(current.feels_like.value) +
+                "°" +
+                current.feels_like.units + 
+                " &nbsp &nbsp &nbsp &nbsp Wind @ " + Math.round(current.wind_speed.value) + 
+                current.wind_speed.units + " &nbsp &nbsp &nbsp &nbsp " + 
+                "Humidity @ " + Math.round(current.humidity.value) + 
+                current.humidity.units;
 
-        var current = this.current;
-        var now = document.createElement("div");
-        now.classList.add("small", "bright", "now");
-        now.innerHTML =
+            wrapper.appendChild(now);
+        }
 
-            this.config.ownTitle + " &nbsp &nbsp " +
+        var Daily = document.createElement("div");
+        Daily.classList.add("small", "bright", "daily");
+		
+        for (i = 0; i < forecast.length; i++) {
+            var forecasts = forecast[i];
+            var dday = moment(forecasts.observation_time.value).format('ddd');
+            var icon = "<img class = image src=modules/MMM-BMW-CC/icons/" + forecasts.weather_code.value + ".png>";
+            var high = Math.round(forecasts.temp[1].max.value);
+            var low = Math.round(forecasts.temp[0].min.value);
+            var total = dday + " " + icon + " " + high + "/" + low + " &nbsp &nbsp  &nbsp &nbsp &nbsp"
 
-            "<img class = image src=./modules/MMM-BMW-CC/icons/" + current[0].weather_code.value + ".png>" +
-            "  &nbsp " +
+            Daily.innerHTML += total;
+        }
 
-            Math.round(current[0].temp.value) + "°" +
-
-            current[0].temp.units + " &nbsp &nbsp &nbsp &nbsp " +
-
-            " Feels like " + Math.round(current[0].feels_like.value) +
-            "°" +
-            current[0].feels_like.units +
-
-            " &nbsp &nbsp &nbsp &nbsp Wind @ " + Math.round(current[0].wind_speed.value) +
-
-            current[0].wind_speed.units + " &nbsp &nbsp &nbsp &nbsp " +
-
-            "Humidity @ " + Math.round(current[0].humidity.value) +
-
-            current[0].humidity.units;
-
-        wrapper.appendChild(now);
-
-
-        // console.log(moment(forecast[0].observation_time.value).format('ddd'));
-        // https://devhints.io/moment
-
-        // daily names, high/low and icons
-        var daily = document.createElement("div");
-        daily.classList.add("small", "bright", "daily");
-        daily.innerHTML =
-
-            moment(forecast[0].observation_time.value).format('ddd') + " &nbsp" + "<img class = image src=./modules/MMM-BMW-CC/icons/" + forecast[0].weather_code.value + ".png>" + " &nbsp" + Math.round(forecast[0].temp[1].max.value) + "/" + Math.round(forecast[0].temp[0].min.value) + " &nbsp &nbsp  &nbsp &nbsp &nbsp" +
-
-
-            moment(forecast[1].observation_time.value).format('ddd') + " &nbsp" + "<img class = image src=./modules/MMM-BMW-CC/icons/" + forecast[1].weather_code.value + ".png>" + " &nbsp" + Math.round(forecast[1].temp[1].max.value) + "/" + Math.round(forecast[1].temp[0].min.value) + " &nbsp &nbsp  &nbsp &nbsp &nbsp" +
-
-
-            moment(forecast[2].observation_time.value).format('ddd') + " &nbsp" + "<img class = image src=./modules/MMM-BMW-CC/icons/" + forecast[2].weather_code.value + ".png>" + " &nbsp" + Math.round(forecast[2].temp[1].max.value) + "/" + Math.round(forecast[2].temp[0].min.value) + " &nbsp &nbsp  &nbsp &nbsp &nbsp" +
-
-
-            moment(forecast[3].observation_time.value).format('ddd') + " &nbsp" + "<img class = image src=./modules/MMM-BMW-CC/icons/" + forecast[3].weather_code.value + ".png>" + " &nbsp" + Math.round(forecast[3].temp[1].max.value) + "/" + Math.round(forecast[3].temp[0].min.value) + " &nbsp &nbsp  &nbsp &nbsp &nbsp" +
-
-
-            moment(forecast[4].observation_time.value).format('ddd') + " &nbsp" + "<img class = image src=./modules/MMM-BMW-CC/icons/" + forecast[4].weather_code.value + ".png>" + " &nbsp" + Math.round(forecast[4].temp[1].max.value) + "/" + Math.round(forecast[4].temp[0].min.value) + " &nbsp &nbsp  &nbsp &nbsp &nbsp" +
-
-
-            moment(forecast[5].observation_time.value).format('ddd') + " &nbsp" + "<img class = image src=./modules/MMM-BMW-CC/icons/" + forecast[5].weather_code.value + ".png>" + " &nbsp" + Math.round(forecast[5].temp[1].max.value) + "/" + Math.round(forecast[5].temp[0].min.value) + " &nbsp &nbsp  &nbsp &nbsp &nbsp" +
-
-
-            moment(forecast[6].observation_time.value).format('ddd') + " &nbsp" + "<img class = image src=./modules/MMM-BMW-CC/icons/" + forecast[6].weather_code.value + ".png>" + " &nbsp" + Math.round(forecast[6].temp[1].max.value) + "/" + Math.round(forecast[6].temp[0].min.value) + " &nbsp &nbsp  &nbsp &nbsp &nbsp";
-
-        wrapper.appendChild(daily);
-
-
+        wrapper.appendChild(Daily);
 
         // Sound for rain, wind, thunder, etc.
         if (forecast[0].weather_code.value == "rain" && this.config.playSounds == "yes") {
@@ -146,18 +121,14 @@ Module.register("MMM-BMW-CC", {
         }
 
         return wrapper;
-    },
-
+    }, 
 
     processWeather: function(data) {
-        this.forecast = data;
-        // console.log(this.forecast);
-        this.loaded = true;
+        this.forecast = data
     },
 
     processCurrent: function(data) {
-        this.current = data;
-        // console.log(this.current);
+        this.current = data;	
         this.loaded = true;
     },
 
