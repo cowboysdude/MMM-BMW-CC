@@ -18,16 +18,7 @@ Now using the free ClimaCell api
 
 ## Examples
 
-* Default white
-
-![](images/1.png)
-
-* Colored
-
-![](images/2.png)
-
-![](images/3.png)
-
+![](images/today.PNG)
 
 ## Installation and requirements
 
