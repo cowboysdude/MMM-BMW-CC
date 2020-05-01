@@ -4,11 +4,6 @@
 
 Now using the free ClimaCell api
 
-## Same church, different pew
-
-* Due to Darksky discontinuing its free api I moved to ClimaCell
-* The data is a bit different but you get 30000 calls a month!
-
 ## Good-bye bottom_bar (Well, not really)
 
 * This was designed for use in the bottom_bar position of your MagicMirror
