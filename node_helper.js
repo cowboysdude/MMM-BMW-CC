@@ -8,7 +8,6 @@
 const NodeHelper = require('node_helper');
 const request = require('request');
 
-
 module.exports = NodeHelper.create({
 
     start: function() {
@@ -41,13 +40,10 @@ module.exports = NodeHelper.create({
         request(options, function(error, response, body) {
             if (error) throw new Error(error);
             var result = JSON.parse(body); 
-             var items = result.slice(1,7);
-             
+             var items = result.slice(0,7); 
             self.getCurrent();
-            self.sendSocketNotification('WEATHER_RESULT', items);
-             
+            self.sendSocketNotification('WEATHER_RESULT', items); 
         });
-
     },
 
     getCurrent: function(url) {
@@ -74,8 +70,7 @@ module.exports = NodeHelper.create({
         request(options, function(error, response, body) {
             if (error) throw new Error(error);
             var result = JSON.parse(body);
-            var item = result[0];
-			console.log(item);
+            var item = result[0]; 
             self.sendSocketNotification('CURRENT_RESULT', item); 
         });
     },
