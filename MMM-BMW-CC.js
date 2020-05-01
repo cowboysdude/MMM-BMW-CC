@@ -94,13 +94,19 @@ Module.register("MMM-BMW-CC", {
 		
         for (i = 0; i < forecast.length; i++) {
             var forecasts = forecast[i];
-            var dday = moment(forecasts.observation_time.value).format('ddd');
+            var now = moment().format('ddd');
+			var dday = moment(forecasts.observation_time.value).format('ddd');
+		
+			console.log(now);	
+			console.log(dday);
+			
             var icon = "<img class = image src=modules/MMM-BMW-CC/icons/" + forecasts.weather_code.value + ".png>";
             var high = Math.round(forecasts.temp[1].max.value);
             var low = Math.round(forecasts.temp[0].min.value);
-            var total = dday + " " + icon + " " + high + "/" + low + " &nbsp &nbsp  &nbsp &nbsp &nbsp"
-
-            Daily.innerHTML += total;
+            var total = dday + " " + icon + " " + high + "/" + low + " &nbsp &nbsp  &nbsp &nbsp &nbsp";
+            var ftoday =  "Today " + icon + " " + high + "/" + low + " &nbsp &nbsp  &nbsp &nbsp &nbsp";
+			var TotalDay = (now != dday)? total:ftoday; 
+            Daily.innerHTML += TotalDay;
         }
 
         wrapper.appendChild(Daily);
@@ -124,7 +130,7 @@ Module.register("MMM-BMW-CC", {
     }, 
 
     processWeather: function(data) {
-        this.forecast = data
+        this.forecast = data 
     },
 
     processCurrent: function(data) {
