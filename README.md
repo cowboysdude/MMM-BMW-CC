@@ -2,7 +2,7 @@
 
 **Bugger My Weather**  
 
-Now using the free ClimaCell api
+Using ClimaCell api
 
 ## Good-bye bottom_bar (Well, not really)
 
